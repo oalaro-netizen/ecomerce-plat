@@ -28,6 +28,14 @@ const userSchema = new mongoose.Schema(
       enum: ["customer", "admin"],
       default: "customer",
     },
+    avatar: { type: String, trim: true, default: "" },
+    phone: { type: String, trim: true, default: "" },
+    dob: { type: Date, default: null },
+    address: { type: String, trim: true, default: "" },
+    googleId: { type: String, unique: true, sparse: true, default: null },
+    emailVerified: { type: Boolean, default: false },
+    emailVerificationTokenHash: { type: String, default: null },
+    emailVerificationExpiresAt: { type: Date, default: null },
   },
   { timestamps: true }
 );

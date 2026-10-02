@@ -62,6 +62,17 @@ export async function meHandler(req, res) {
   res.status(200).json({ user: req.user });
 }
 
+import User from "../models/user.model.js";
+
+export async function getAllUsersHandler(req, res, next) {
+  try {
+    const users = await User.find().select("_id name email role");
+    res.json({ users });
+  } catch (err) {
+    next(err);
+  }
+}
+
 export async function updateProfileHandler(req, res, next) {
   try {
     const errors = validateUpdateProfile(req.body || {});

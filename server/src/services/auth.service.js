@@ -42,6 +42,9 @@ function sanitizeUser(user) {
     name: user.name,
     email: user.email,
     role: user.role,
+    avatar: user.avatar || "",
+    phone: user.phone || "",
+    dob: user.dob ? user.dob.toISOString().split("T")[0] : "",
   };
 }
 
@@ -106,7 +109,7 @@ export function logout() {
   return { ok: true };
 }
 
-export async function updateProfile(userId, { name = "", email = "" } = {}) {
+export async function updateProfile(userId, { name = "", email = "", phone = "", dob = "" } = {}) {
   const user = await User.findById(userId);
   if (!user) throw authError("Not authenticated", 401);
 
@@ -117,7 +120,8 @@ export async function updateProfile(userId, { name = "", email = "" } = {}) {
     if (existing) throw authError("An account with this email already exists", 409);
     user.email = normalizedEmail;
   }
-
+  if (phone.trim().length > 0) user.phone = phone;
+  if (dob) user.dob = new Date(dob);
   await user.save();
   return sanitizeUser(user);
 }
